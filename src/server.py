@@ -25,6 +25,10 @@ class Reading(db.Model):
 
 db.create_all()
 
+def getTemp():
+    #this is fake for now...
+    return psutil.cpu_percent()
+
 def logCPU():
     cpuPercent = psutil.cpu_percent()
     newLog = Reading(readingType='CPU',reading=cpuPercent,timestamp=datetime.datetime.utcnow())
@@ -32,8 +36,8 @@ def logCPU():
     db.session.commit()
 
 def logTemp():
-    cpuPercent = psutil.cpu_percent()
-    newLog = Reading(readingType='Temp',reading=cpuPercent,timestamp=datetime.datetime.utcnow())
+    temperature = getTemp()
+    newLog = Reading(readingType='Temp',reading=temperature,timestamp=datetime.datetime.utcnow())
     db.session.add(newLog)
     db.session.commit()
 
@@ -43,20 +47,16 @@ def all_logs():
         print str(r.readingType) + ": " + str(r.reading) + ", timestamp: " + str(r.timestamp)
 
 def print_all_of_type(sensorType):
-    readings = db.session.query(Reading).filter_by(readingType=sensorType).limit(40)
+    readings = get_all_of_type(sensorType)
     for reading in readings:
         print str(reading.readingType) + ": " + str(reading.reading) + ", timestamp: " + str(reading.timestamp)
+
+def get_all_of_type(sensorType):
+    return db.session.query(Reading).filter_by(readingType=sensorType).all()
 
 def get_count_of_all_type(sensorType):
     return db.session.query(Reading).filter_by(readingType=sensorType).count()
 
-# for x in range(0, 4):
-#     logCPU()
-#     time.sleep(int(interval))
-#
-# for x in range(0, 8):
-#     logTemp()
-#     time.sleep(int(interval))
-# all_logs()
-print get_count_of_all_type('Temp')
+print 'Starting Environment Monitor...'
+print 'number of records: ' + str(get_count_of_all_type('Temp'))
 print_all_of_type('Temp')
