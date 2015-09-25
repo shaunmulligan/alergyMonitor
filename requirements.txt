@@ -1,5 +1,5 @@
 #put all python dependencies in here.
 Flask==0.10.1
-Flask-SQLAlchemy=1.0
+Flask-SQLAlchemy==1.0
 sqlalchemy
 psutil
