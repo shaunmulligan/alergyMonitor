@@ -3,7 +3,7 @@ import psutil
 import os, time
 
 # import sqlchemy refs
-from db_setup import Reading, session
+from setup_db import Reading, session
 
 # read environment variables + set defaults
 interval = os.getenv('INTERVAL', '20')
