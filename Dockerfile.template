@@ -42,6 +42,6 @@ RUN pip install -r /requirements.txt
 COPY ./*.sh /
 
 # Main source code
-ADD /src/ /usr/src/app
+ADD /app/ /usr/src/app
 
 CMD ["bash", "/start.sh"]
